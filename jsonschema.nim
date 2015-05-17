@@ -1,5 +1,6 @@
 import json
 import strutils
+import re
 
 type ValidationError = object of ValueError
 
@@ -37,3 +38,7 @@ proc maximum(maximum: float, node: JsonNode, schema: JsonNode) =
     raise newException(
       ValidationError,
       "$# is $# the maximum of $#".format(instance, cmp, maximum))
+
+proc pattern(pattern: string, node: JsonNode, schema: JsonNode) =
+  if not getStr(node).contains(pattern):
+    raise newException(ValidationError, "$# does not match $#".format(node, $pattern))

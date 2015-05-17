@@ -7,6 +7,11 @@ type ValidationError = object of ValueError
 proc validate(node: JsonNode, schema: JsonNode) =
   discard
 
+proc items(item_list: seq[JsonNode], node: JsonNode, schema: JsonNode) =
+  let instance = node.getElems()
+  for index, value in pairs(instance):
+    validate(value, schema)
+
 proc minimum(minimum: float, node: JsonNode, schema: JsonNode) =
   var
     failed: bool

@@ -44,6 +44,16 @@ proc maximum(maximum: float, node: JsonNode, schema: JsonNode) =
       ValidationError,
       "$# is $# the maximum of $#".format(instance, cmp, maximum))
 
+proc minItems(mI: int, node: JsonNode, schema: JsonNode) =
+  let instance = node.getElems()
+  if len(instance) < mI:
+    raise newException(ValidationError, "$# is too short".format(instance))
+
+proc maxItems(mI: int, node: JsonNode, schema: JsonNode) =
+  let instance = node.getElems()
+  if len(instance) > mI:
+    raise newException(ValidationError, "$# is too long".format(instance))
+
 proc pattern(pattern: string, node: JsonNode, schema: JsonNode) =
   if not getStr(node).contains(pattern):
     raise newException(ValidationError, "$# does not match $#".format(node, $pattern))
